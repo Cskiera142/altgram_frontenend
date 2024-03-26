@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -14,9 +15,10 @@ import { Input } from "@/components/ui/input";
 import { SignupValidation } from "@/lib/validation";
 
 import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
 
 function SignupForm() {
-  const isLoading = true;
+  const isLoading = false;
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -28,8 +30,9 @@ function SignupForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof SignupValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
+    // create the user
+    const newUser = await;
   }
 
   return (
@@ -105,11 +108,22 @@ function SignupForm() {
           />
           <Button type="submit" className="shad-button_primary">
             {isLoading ? (
-              <div className="flex-center gap-2">Loading...</div>
+              <div className="flex-center gap-2">
+                <Loader />
+              </div>
             ) : (
               "Sign up"
             )}
           </Button>
+          <p className="text-small-regular text-light-2 text-center mt-2">
+            Already have an accout?
+            <Link
+              to="/sign-in"
+              className="text-primary-bold text-small-semibold ml-1"
+            >
+              Log in
+            </Link>
+          </p>
         </form>
       </div>
     </Form>
